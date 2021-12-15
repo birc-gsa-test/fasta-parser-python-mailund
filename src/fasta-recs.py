@@ -12,7 +12,10 @@ def main():
     )
     args = argparser.parse_args()
 
-    # parse and output the records
+    # parse and output the records.
+    # Python dicts are (currently) ordered in insertion
+    # order, so we get the records out in the order we
+    # read them, which is what we want here.
     for name, seq in parse_fasta(args.fasta).items():
         print(name, seq, sep='\t')
     args.fasta.close()
