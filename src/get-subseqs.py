@@ -1,10 +1,11 @@
 import argparse
 import sys
+from fasta import parse_fasta
 
 
 def main():
     argparser = argparse.ArgumentParser(
-        description="Extract Simple-FASTA records"
+        description="Extract sub-sequences from a Simple-FASTA file"
     )
     argparser.add_argument(
         "fasta",
@@ -18,8 +19,14 @@ def main():
     )
     args = argparser.parse_args()
 
-    print(f"Now I need to process the records in {args.fasta}")
-    print(f"and the coordinates in {args.coords}")
+    recs = parse_fasta(args.fasta)
+    args.fasta.close()
+
+    for line in args.coords:
+        name, start, stop = line.split()
+        start, stop = int(start), int(stop)
+        print(recs[name][start-1:stop-1])
+    args.coords.close()
 
 
 if __name__ == '__main__':
